@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Current (recent avg ~$77K)",
+    "month": 202604,
+    "note": "Dec 2025 – Feb 2026 average spend per channel, maintaining current allocation mix.",
+    "spend": {
+      "google_brand_spend": 13000,
+      "google_capture_spend": 25500,
+      "google_other_spend": 15000,
+      "linkedin_brand_spend": 9500,
+      "linkedin_capture_spend": 1500,
+      "linkedin_abm_spend": 0,
+      "linkedin_other_spend": 7500,
+      "meta_spend": 3000,
+      "other_spend": 2500
+    }
+  },
+  {
+    "name": "$100K April — model-guided",
+    "month": 202604,
+    "note": "Reallocated to highest-ROI channels per pipeline model. LinkedIn Brand doubled, Google Other reduced (negative pipeline coefficient), Other/Events increased (positive pipeline coefficient), LinkedIn ABM reinstated.",
+    "spend": {
+      "google_brand_spend": 15000,
+      "google_capture_spend": 28000,
+      "google_other_spend": 8000,
+      "linkedin_brand_spend": 20000,
+      "linkedin_capture_spend": 4000,
+      "linkedin_abm_spend": 5000,
+      "linkedin_other_spend": 4000,
+      "meta_spend": 3000,
+      "other_spend": 13000
+    }
+  },
+  {
+    "name": "$90K April — model-guided (−10%)",
+    "month": 202604,
+    "note": "Same reallocation logic as $100K but with 10% overall budget reduction. Cuts fall on negative-pipeline channels (Google Other, LinkedIn Other) first; LinkedIn Brand and Other/Events protected.",
+    "spend": {
+      "google_brand_spend": 14000,
+      "google_capture_spend": 25000,
+      "google_other_spend": 6000,
+      "linkedin_brand_spend": 19000,
+      "linkedin_capture_spend": 4000,
+      "linkedin_abm_spend": 5000,
+      "linkedin_other_spend": 3000,
+      "meta_spend": 2500,
+      "other_spend": 11500
+    }
+  }
+]

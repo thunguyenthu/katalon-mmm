@@ -1,0 +1,28 @@
+outcome,lag,monthly,channel,total_spend,attributed_outcome,share_pct,adj_roi,ols_coeff,decay_used,r2,mape
+mqls,0,True,Google Brand,467388.73,4596.19,31.64,0.0098,0.006288,0.4,0.8554,12.85
+mqls,0,True,Google Capture,893255.81,0.0,0.0,0.0,-0.004338,0.2,0.8554,12.85
+mqls,0,True,Google Other,824582.39,0.0,0.0,0.0,-0.000306,0.3,0.8554,12.85
+mqls,0,True,LinkedIn Brand,80304.62,0.0,0.0,0.0,-0.000752,0.6,0.8554,12.85
+mqls,0,True,LinkedIn Capture,183241.8,4159.27,28.63,0.0227,0.004742,0.5,0.8554,12.85
+mqls,0,True,LinkedIn ABM,148879.68,0.0,0.0,0.0,-0.001051,0.55,0.8554,12.85
+mqls,0,True,LinkedIn Other,501257.31,191.78,1.32,0.0004,0.000236,0.45,0.8554,12.85
+mqls,0,True,Meta,32889.99,0.0,0.0,0.0,-0.007506,0.25,0.8554,12.85
+mqls,0,True,Other/Events,179078.89,2383.04,16.41,0.0133,0.002934,0.3,0.8554,12.85
+inbound_pipeline,1,True,Google Brand,467388.73,863658.63,3.12,1.8478,2.151005,0.4,0.7026,19.7
+inbound_pipeline,1,True,Google Capture,893255.81,1255544.25,4.54,1.4056,3.310967,0.2,0.7026,19.7
+inbound_pipeline,1,True,Google Other,824582.39,0.0,0.0,0.0,-5.076225,0.3,0.7026,19.7
+inbound_pipeline,1,True,LinkedIn Brand,80304.62,16106387.43,58.22,200.5661,32.82065,0.6,0.7026,19.7
+inbound_pipeline,1,True,LinkedIn Capture,183241.8,0.0,0.0,0.0,-11.015293,0.5,0.7026,19.7
+inbound_pipeline,1,True,LinkedIn ABM,148879.68,252876.09,0.91,1.6985,0.506094,0.55,0.7026,19.7
+inbound_pipeline,1,True,LinkedIn Other,501257.31,0.0,0.0,0.0,-4.388385,0.45,0.7026,19.7
+inbound_pipeline,1,True,Meta,32889.99,0.0,0.0,0.0,-189.121164,0.25,0.7026,19.7
+inbound_pipeline,1,True,Other/Events,179078.89,3099710.04,11.2,17.3092,6.948048,0.3,0.7026,19.7
+won_arr,5,True,Google Brand,467388.73,0.0,0.0,0.0,-3.227133,0.4,0.3484,38.12
+won_arr,5,True,Google Capture,893255.81,729928.23,10.32,0.8172,6.659602,0.2,0.3484,38.12
+won_arr,5,True,Google Other,824582.39,4375.64,0.06,0.0053,0.037704,0.3,0.3484,38.12
+won_arr,5,True,LinkedIn Brand,80304.62,0.0,0.0,0.0,-14.76454,0.6,0.3484,38.12
+won_arr,5,True,LinkedIn Capture,183241.8,0.0,0.0,0.0,-0.219384,0.5,0.3484,38.12
+won_arr,5,True,LinkedIn ABM,148879.68,411523.94,5.82,2.7641,2.84947,0.55,0.3484,38.12
+won_arr,5,True,LinkedIn Other,501257.31,0.0,0.0,0.0,-0.545726,0.45,0.3484,38.12
+won_arr,5,True,Meta,32889.99,4373720.55,61.81,132.9803,33.91861,0.25,0.3484,38.12
+won_arr,5,True,Other/Events,179078.89,0.0,0.0,0.0,-9.216911,0.3,0.3484,38.12
