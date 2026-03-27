@@ -1,0 +1,34 @@
+[
+  {
+    "name": "April $67K (current pace)",
+    "note": "Jan–Mar 2026 average spend mix, scaled to $67K",
+    "month": 202604,
+    "spend": {
+      "google_brand_spend": 12426,
+      "google_capture_spend": 22636,
+      "google_other_spend": 11950,
+      "linkedin_brand_spend": 8745,
+      "linkedin_capture_spend": 1433,
+      "linkedin_abm_spend": 0,
+      "linkedin_other_spend": 5008,
+      "meta_spend": 3528,
+      "other_spend": 1473
+    }
+  },
+  {
+    "name": "April $100K (increased budget)",
+    "note": "Same channel mix proportionally scaled to $100K",
+    "month": 202604,
+    "spend": {
+      "google_brand_spend": 18491,
+      "google_capture_spend": 33685,
+      "google_other_spend": 17783,
+      "linkedin_brand_spend": 13014,
+      "linkedin_capture_spend": 2132,
+      "linkedin_abm_spend": 0,
+      "linkedin_other_spend": 7452,
+      "meta_spend": 5250,
+      "other_spend": 2192
+    }
+  }
+]

@@ -186,6 +186,11 @@ PAID_SHARE       = 1.0 - ORGANIC_BASELINE
 # (before 2024, MQLs included both low and high intent).
 QUALITY_CONTROLS = ["mql_high_intent_rate", "mql_non_smb_rate", "cr_mql_to_sql"]
 
+# Market efficiency control: Google Brand CPM normalized to its historical median.
+# index > 1.0 = ads more expensive than usual (inflation), < 1.0 = cheaper than usual.
+# Added as a covariate so the model distinguishes "less spend" from "same spend, worse efficiency."
+MARKET_CONTROLS = ["market_cpm_index"]
+
 # Structural break flags always added to X when present in the dataframe.
 # pre_2024_flag = 1 for months before Jan 2024 (different strategy + MQL definition).
 BREAK_FLAGS = ["pre_2024_flag"]
@@ -248,7 +253,7 @@ def aggregate_monthly(
     df = df.copy()
     df["month"] = df["week"].apply(week_to_month)
     agg_spec = {c: "sum" for c in spend_cols + outcome_cols if c in df.columns}
-    for flag in ["q4_flag", "q1_flag"] + QUALITY_CONTROLS + BREAK_FLAGS:
+    for flag in ["q4_flag", "q1_flag"] + QUALITY_CONTROLS + MARKET_CONTROLS + BREAK_FLAGS:
         if flag in df.columns:
             agg_spec[flag] = "mean"
     monthly = df.groupby("month", sort=True).agg(agg_spec).reset_index()
@@ -302,6 +307,30 @@ def load_json_data(path: str) -> pd.DataFrame:
     df["meta_spend"]  = df["meta_spend"].fillna(0)  if "meta_spend"  in df.columns else 0.0
     df["other_spend"] = df["other_spend"].fillna(0) if "other_spend" in df.columns else 0.0
 
+    # ── Market inflation index ─────────────────────────────────────────────────
+    # google_brand_cpm is the most complete CPM signal (51/51 months).
+    # Normalize to median so index=1.0 means "historically average ad prices".
+    # This covariate lets the model separate "less spend" from "same spend, worse CPM".
+    if "google_brand_cpm" in df.columns:
+        cpm = df["google_brand_cpm"].fillna(df["google_brand_cpm"].median())
+        cpm_median = float(cpm.median())
+        df["market_cpm_index"] = (cpm / cpm_median) if cpm_median > 0 else 1.0
+
+    # ── Grouped impressions (for reference; complete channels only) ────────────
+    # google_brand and google_other are 51/51; linkedin_other is 50/51.
+    # Channels with <30 non-null months are not grouped (too sparse).
+    df["google_brand_impressions"]   = _sum(["google_brand_impressions",
+                                             "google_thought_leader_impressions"])
+    df["google_capture_impressions"] = _sum([
+        "google_ppc_impressions", "google_competitor_impressions",
+        "google_solution_impressions", "google_soqr_impressions",
+        "google_retargeting_impressions", "google_abm_impressions",
+    ])
+    df["google_other_impressions"]   = df["google_other_impressions"].fillna(0) \
+                                       if "google_other_impressions" in df.columns else 0.0
+    df["linkedin_other_impressions"] = df["linkedin_other_impressions"].fillna(0) \
+                                       if "linkedin_other_impressions" in df.columns else 0.0
+
     # Convert YYYYMM month to ISO week string for seasonality parsing
     def _month_to_isoweek(m):
         s = str(int(m))
@@ -321,8 +350,12 @@ def load_json_data(path: str) -> pd.DataFrame:
             if lc in df.columns:
                 df[qc] = df[lc]
 
+    impression_cols = [
+        "google_brand_impressions", "google_capture_impressions",
+        "google_other_impressions", "linkedin_other_impressions",
+    ]
     keep = (["week", "month"] + list(CHANNEL_META.keys()) + list(OUTCOME_META.keys())
-            + QUALITY_CONTROLS + BREAK_FLAGS)
+            + QUALITY_CONTROLS + MARKET_CONTROLS + BREAK_FLAGS + impression_cols)
     return df[[c for c in keep if c in df.columns]].copy()
 
 
@@ -393,7 +426,7 @@ def run_mmm_ols(
         if bf in df.columns and df[bf].sum() > 0:
             X_cols[bf] = df[bf].values[valid].astype(float)
     if use_quality_controls:
-        for qc in QUALITY_CONTROLS:
+        for qc in QUALITY_CONTROLS + MARKET_CONTROLS:
             if qc in df.columns:
                 col = df[qc].fillna(df[qc].median()).values
                 X_cols[qc] = col[valid]
@@ -581,6 +614,8 @@ def print_result(res: dict):
             tag = "  ← strategy break (not attributed)"
         elif col in QUALITY_CONTROLS:
             tag = "  ← quality control (not attributed)"
+        elif col in MARKET_CONTROLS:
+            tag = "  ← market inflation control (not attributed)"
         else:
             tag = ""
         sign = "✓" if (col in CHANNEL_META and val > 0) else ("✗" if col in CHANNEL_META else " ")
@@ -1039,9 +1074,9 @@ def run_scenario_forecast(
     q4_flag   = 1 if month_num in (10, 11, 12) else 0
     q1_flag   = 1 if month_num in (1, 2) else 0
 
-    # ── Quality controls: last-3-month average ────────────────────────────────
+    # ── Quality + market controls: last-3-month average ──────────────────────
     assumed_quality = {}
-    for qc in QUALITY_CONTROLS:
+    for qc in QUALITY_CONTROLS + MARKET_CONTROLS:
         if qc in df_fit.columns:
             vals = df_fit[qc].dropna().values
             assumed_quality[qc] = (
